@@ -14,7 +14,7 @@
         </div>
       </li>
     </ul>
-    <div class="none-list">暂无数据</div>
+    <div class="none-list" v-else>暂无数据</div>
   </div>
 </template>
 
@@ -46,6 +46,6 @@ export default {
 }
 .none-list{
     text-align: center;
-    
+
 }
 </style>
