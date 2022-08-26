@@ -9,23 +9,25 @@
     :validate-on-rule-change="false"
   >
     <template v-for="item in showOptions">
-      <el-form-item :key="item.prop" :label="item.label" :prop="item.prop">
-        <template>
+      <el-form-item  :key="item.prop" :label="item.label" :prop="item.prop">
+
           <component :is="`el-${item.type}`" v-model="model[item.prop]" v-bind="item.attrs"/>
-        </template>
+
       </el-form-item>
+
     </template>
     <!-- 表单按钮插槽 -->
-    <el-form-item>
       <slot name="formBtn" :scope="model"/>
-    </el-form-item>
+
   </el-form>
+  
 </template>
 
 <script>
 // 深拷贝
 import cloneDeep from "lodash/cloneDeep";
 import debounce from "lodash/debounce";
+
 
 export default {
   name: "MForm",
@@ -47,6 +49,7 @@ export default {
     },
     // 验证规则
     rules() {
+
       const r = {};
       for (let i = 0; i < this.options.length; i++) {
         const op = this.options[i] || {};

@@ -1,11 +1,17 @@
 const storage={
-    set(){
+    set(key,value){
         localStorage.setItem(key,JSON.stringify(value))
     },
-    get(){
-        return JSON.parse(localStorage.getItem(key))
+    get(key){
+        let value =  localStorage.getItem(key)
+        console.log(value,'valuevalue',!value);
+        if(typeof value!==undefined){
+            return  JSON.parse(value)
+        }
+        return   null
     },
-    remove(){
-        localStorage.setItem(key)
+    remove(key){
+        localStorage.removeItem(key)
     },
 }
+export default storage
