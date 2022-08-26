@@ -2,49 +2,126 @@
   <div id="app">
     <div class="content">
       <div class="warp">
-        <el-form :inline="true" :model="form" size="mini">
-          <el-form-item label="题目类型">
-            <el-input v-model="form.type" placeholder="题目类型"></el-input>
-          </el-form-item>
-          <el-form-item label="题目描述">
-            <el-input v-model="form.remark" placeholder="题目描述"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="searchList">查询</el-button>
+        <!-- 搜索表单 -->
+        <m-form inline size="mini" label-width="70px"  :options="searchFromOp">
+          <template #formBtn="{scope}">
+            <el-button type="primary" @click="searchList(scope)">查询</el-button>
             <el-button type="primary" @click="createList">创建条目</el-button>
-          </el-form-item>
-        </el-form>
-        <div class="list">
-          <ul>
-            <li v-for="(item,inx) in list" :key="item.id">
-              <h4>{{(inx+1)+'、'+item.type}}</h4>
-              <div class="list-content">
-                <p>{{item.remark}}</p>
-                <ul>
-                  <li v-for="subItem in item.children" :key="subItem.marks">
-                    <el-radio v-model="item.radioValue" :label="subItem.marks">{{subItem.text}}</el-radio>
-                  </li>
-                </ul>
-              </div>
-            </li>
-          </ul>
-        </div>
+          </template>
+        </m-form>
+        <!-- 创建条目 -->
+        <m-form
+          ref="form"
+          size="mini"
+          label-width="80px"
+          :options="fromOp"
+          @save="saveForm"
+        />
+        <!-- 题目列表 -->
+        <listItem :list="list"></listItem>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import listItem from "./components/ListItem";
+import MForm from "./components/Form";
+
+
 export default {
   name: "App",
   components: {
+    listItem,
+    MForm
   },
   data() {
     return {
-      form: {
-        type: "",
-        remark: ""
-      },
+      //搜索表单
+      searchFromOp: [
+        {
+          type: "input",
+          value: "",
+          label: "题目类型",
+          prop: "type",
+          attrs: {
+            style: {
+              width: "180px"
+            },
+            clearable: true,
+            placeholder: "题目类型"
+          }
+        },
+        {
+          type: "input",
+          value: "",
+          label: "题目描述",
+          prop: "remark",
+          attrs: {
+            style: {
+              width: "180px"
+            },
+            clearable: true,
+            placeholder: "题目描述"
+          }
+        }
+      ],
+      //创建条目表单
+      fromOp: [
+        {
+          type: "input",
+          value: "",
+          label: "题目ID号",
+          prop: "id",
+          rules: [
+            {
+              required: true,
+              message: "必填"
+            }
+          ],
+          attrs: {
+            style: {},
+            clearable: true,
+            placeholder: "请输入ID号"
+          }
+        },
+        {
+          type: "input",
+          value: "",
+          label: "题目类型",
+          prop: "type",
+          rules: [
+            {
+              required: true,
+              message: "必填"
+            }
+          ],
+          attrs: {
+            style: {},
+            clearable: true,
+            placeholder: "请输入类型"
+          }
+        },
+        {
+          type: "input",
+          value: "",
+          label: "题目描述",
+          prop: "remark",
+          rules: [
+            {
+              required: true,
+              message: "必填"
+            }
+          ],
+          attrs: {
+            type: "textarea",
+            style: {},
+            clearable: true,
+            placeholder: "请输入描述"
+          }
+        }
+      ],
+      //题目列表
       list: [
         {
           type: "变革创新",
@@ -77,11 +154,12 @@ export default {
       ]
     };
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
-    searchList() {},
+    saveForm() {},
+    searchList(row) {
+      console.log(row);
+    },
     createList() {}
   }
 };
@@ -96,11 +174,7 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-.search-form .ul {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-}
+
 ul {
   padding: 10px;
 }
@@ -114,14 +188,5 @@ li {
 .warp {
   text-align: left;
 }
-.list ul {
-  text-align: left;
-}
-.list-content p {
-  text-indent: 2em;
-}
-.list-content li {
-  line-height: 24px;
-  text-indent: 1em;
-}
+
 </style>
